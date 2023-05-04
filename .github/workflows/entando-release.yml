@@ -301,7 +301,7 @@ jobs:
             TAG_FOUND=false
             for ((i=0;i<COUNT;i++)); do
               RELEASE_TAG_NAME=$(jq .[$i].tag_name releases.json)
-              Echo "Comparing $RELEASE_TAG_NAME with \"${{ env.RELEASE_TAG }}\""
+              echo "Comparing $RELEASE_TAG_NAME with \"${{ env.RELEASE_TAG }}\""
               if [[ $RELEASE_TAG_NAME == \"${{ env.RELEASE_TAG }}\" ]]
               then
                 TAG_FOUND=true
