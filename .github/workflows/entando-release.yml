@@ -326,7 +326,7 @@ jobs:
             https://api.github.com/repos/${{ env.ENTANDO_RELEASES_REPO }}/releases/latest > releases.json
           echo "Curl done."
           LATEST_TAG_NAME=$(jq .tag_name releases.json)
-          Echo "Comparing $LATEST_TAG_NAME with \"${{ env.RELEASE_TAG }}\""
+          echo "Comparing $LATEST_TAG_NAME with \"${{ env.RELEASE_TAG }}\""
           if [[ $LATEST_TAG_NAME == \"${{ env.RELEASE_TAG }}\" ]]
           then
             curl \
