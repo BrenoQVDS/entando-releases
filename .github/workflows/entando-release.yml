@@ -10,9 +10,9 @@ env:
   # catalyst-infra-templates namespace and repository
   CATALYST_INFRA_TEMPLATES_REPO: entando/catalyst-infra-templates
   # entando-k8s-operator-bundle namespace and repository
-  ENTANDO_K8S_OPERATOR_BUNDLE_REPO: entando-k8s/entando-k8s-operator-bundle
+  ENTANDO_K8S_OPERATOR_BUNDLE_REPO: BrenoQVDS/entando-k8s-operator-bundle
   # entando-releases namespace and repository
-  ENTANDO_RELEASES_REPO: entando/entando-releases
+  ENTANDO_RELEASES_REPO: BreonQVDS/entando-releases
   
   # The user name to be associated with the commit
   COMMIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
