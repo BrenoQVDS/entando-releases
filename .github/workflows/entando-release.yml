@@ -212,7 +212,8 @@ jobs:
       with:
         repository: ${{ env.ENTANDO_RELEASES_REPO }}
         ref: ${{ env.RELEASE_BRANCH }}
-        token: ${{ secrets.ENTANDO_BOT_TOKEN }}       
+        token: ${{ secrets.ENTANDO_BOT_TOKEN }}
+        fetch-depth: 0
         
     # Validate the release tag
     - name: Validate release tag
