@@ -191,6 +191,7 @@ jobs:
           MAKE_LATEST=legacy
         fi
         PAYLOAD='{"tag_name":"${{ env.RELEASE_TAG }}","target_commitish":"${{ env.RELEASE_BRANCH }}","name":"${{ env.RELEASE_TAG }}","body":"${{ env.RELEASE_TAG }} release","draft":false,"prerelease":false,"generate_release_notes":true,"make_latest":"'$MAKE_LATEST\"}
+        echo $PAYLOAD
         curl \
           -X POST \
           -H "Accept: application/vnd.github+json" \
@@ -223,7 +224,6 @@ jobs:
         sed -i "s|OPERATOR_BUNDLE_VERSION=.*|OPERATOR_BUNDLE_VERSION=\"${{ env.RELEASE_TAG }}\"|" manifest
         while true; do
           BASE_URL="https://hub.docker.com/v2/namespaces/entandobuilduser/repositories/entando-k8s-index/tags?name="${{ env.RELEASE_VERSION_SUFFIX }}"&page_size=1000"
-          BASE_URL="https://hub.docker.com/v2/namespaces/entandobuilduser/repositories/entando-k8s-index/tags?name=7.1.7&page_size=1000"
           echo "Querying docker hub: $BASE_URL"
           curl -X GET $BASE_URL > result.json
           cat result.json
