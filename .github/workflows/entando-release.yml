@@ -214,6 +214,16 @@ jobs:
         ref: ${{ env.RELEASE_BRANCH }}
         token: ${{ secrets.ENTANDO_BOT_TOKEN }}       
         
+    # Validate the release tag
+    - name: Validate release tag
+      run: |
+        # Check if the release tag already exists
+        if [[ $(git tag -l $RELEASE_TAG) ]]
+        then
+            echo "::error :: Tag '$RELEASE_TAG' already exists"
+            exit 7
+        fi
+        
     # Update the manifest file
     - name: Update manifest file
       env: 
