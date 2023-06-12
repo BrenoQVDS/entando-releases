@@ -202,7 +202,7 @@ jobs:
   release-entando-releases-bundle:
     name: Release entando-releases
     runs-on: ubuntu-latest
-    timeout-minutes: 1
+    timeout-minutes: 5
     needs: release-entando-k8s-operator-bundle
     steps:
 
