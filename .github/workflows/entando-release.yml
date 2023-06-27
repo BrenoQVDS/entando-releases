@@ -197,7 +197,7 @@ jobs:
             echo "here4 $current_patch"
         fi
         MAKE_LATEST=false
-        if [[ $1 =~ $VERSION_REGEX ]]; then
+        if [[ ${{ env.RELEASE_VERSION_SUFFIX }} =~ $VERSION_REGEX ]]; then
             echo "here5"
             new_major=${BASH_REMATCH[1]}
             echo "here6 $new_major"
@@ -318,7 +318,7 @@ jobs:
             current_patch=${BASH_REMATCH[3]}
         fi
         MAKE_LATEST=false
-        if [[ $1 =~ $VERSION_REGEX ]]; then
+        if [[ ${{ env.RELEASE_VERSION_SUFFIX }} =~ $VERSION_REGEX ]]; then
             new_major=${BASH_REMATCH[1]}
             new_minor=${BASH_REMATCH[2]} 
             new_patch=${BASH_REMATCH[3]}
