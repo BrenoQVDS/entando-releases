@@ -1,7 +1,8 @@
 name: Entando Release
 
 on:
-  workflow_dispatch:
+  repository_dispatch:
+    types: [entando-release]
 
 env:
   # URL of the DockerHub repositories configuration file
