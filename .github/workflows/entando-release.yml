@@ -196,6 +196,7 @@ jobs:
         echo "The current latest tag is = $LATEST_TAG_NAME"
         VERSION_REGEX='^([0-9]+).([0-9]+).([0-9]+)$'
         CURRENT_LATEST_VERSION=${LATEST_TAG_NAME:1}
+        echo "CURRENT_LATEST_VERSION = $CURRENT_LATEST_VERSION"
         if [[ $CURRENT_LATEST_VERSION =~ $VERSION_REGEX ]]; then
             echo "here1"
             current_major=${BASH_REMATCH[1]}
