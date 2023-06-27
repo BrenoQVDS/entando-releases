@@ -185,11 +185,28 @@ jobs:
     # Release entando-k8s-operator-bundle
     - name: Release entando-k8s-operator-bundle ${{ env.RELEASE_TAG }}
       run: |
-        MAKE_LATEST=false
-        if [[ -z "${{ env.SUFFIX }}" ]]
-        then
-          MAKE_LATEST=legacy
+        VERSION_REGEX='^([0-9]+).([0-9]+).([0-9]+)$'
+        CURRENT_LATEST_VERSION=7.2.1
+        if [[ $CURRENT_LATEST_VERSION =~ $VERSION_REGEX ]]; then
+            current_major=${BASH_REMATCH[1]}
+            current_minor=${BASH_REMATCH[2]} 
+            current_patch=${BASH_REMATCH[3]}
         fi
+        MAKE_LATEST=false
+        if [[ $1 =~ $VERSION_REGEX ]]; then
+            new_major=${BASH_REMATCH[1]}
+            new_minor=${BASH_REMATCH[2]} 
+            new_patch=${BASH_REMATCH[3]}
+            if [[ $new_major -gt $current_major ]] || 
+            [[ $new_major -eq $current_major && $new_minor -gt $current_minor ]] ||
+            [[ $new_major -eq $current_major && $new_minor -eq $current_minor && $new_patch -gt $current_patch ]];
+            then
+                MAKE_LATEST=true 
+            fi
+        fi
+        echo "current_major = $current_major, current_minor = $current_minor, current_patch = $current_patch"
+        echo "new_major = $new_major, new_minor = $new_minor, new_patch = $new_patch"
+        echo $MAKE_LATEST
         PAYLOAD='{"tag_name":"${{ env.RELEASE_TAG }}","target_commitish":"${{ env.RELEASE_BRANCH }}","name":"${{ env.RELEASE_TAG }}","body":"${{ env.RELEASE_TAG }} release","draft":false,"prerelease":false,"generate_release_notes":true,"make_latest":"'$MAKE_LATEST\"}
         echo $PAYLOAD
         curl \
@@ -285,11 +302,28 @@ jobs:
     # Tag and release entando-releases
     - name: Tag and release entando-releases ${{ env.RELEASE_TAG }}
       run: |
-        MAKE_LATEST=false
-        if [[ -z "${{ env.SUFFIX }}" ]]
-        then
-          MAKE_LATEST=legacy
+        VERSION_REGEX='^([0-9]+).([0-9]+).([0-9]+)$'
+        CURRENT_LATEST_VERSION=7.2.1
+        if [[ $CURRENT_LATEST_VERSION =~ $VERSION_REGEX ]]; then
+            current_major=${BASH_REMATCH[1]}
+            current_minor=${BASH_REMATCH[2]} 
+            current_patch=${BASH_REMATCH[3]}
         fi
+        MAKE_LATEST=false
+        if [[ $1 =~ $VERSION_REGEX ]]; then
+            new_major=${BASH_REMATCH[1]}
+            new_minor=${BASH_REMATCH[2]} 
+            new_patch=${BASH_REMATCH[3]}
+            if [[ $new_major -gt $current_major ]] || 
+            [[ $new_major -eq $current_major && $new_minor -gt $current_minor ]] ||
+            [[ $new_major -eq $current_major && $new_minor -eq $current_minor && $new_patch -gt $current_patch ]];
+            then
+                MAKE_LATEST=true 
+            fi
+        fi
+        echo "current_major = $current_major, current_minor = $current_minor, current_patch = $current_patch"
+        echo "new_major = $new_major, new_minor = $new_minor, new_patch = $new_patch"
+        echo $MAKE_LATEST
         git tag ${{ env.RELEASE_TAG }} ${{ env.RELEASE_BRANCH }}
         git push origin ${{ env.RELEASE_TAG }}
         PAYLOAD='{"tag_name":"${{ env.RELEASE_TAG }}","target_commitish":"${{ env.RELEASE_BRANCH }}","name":"${{ env.RELEASE_TAG }}","body":"${{ env.RELEASE_TAG }} release","draft":false,"prerelease":false,"generate_release_notes":true,"make_latest":"'$MAKE_LATEST\"}
