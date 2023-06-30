@@ -191,7 +191,6 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.ENTANDO_BOT_TOKEN }}"\
           -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/${{ env.ENTANDO_K8S_OPERATOR_BUNDLE_REPO }}/releases/latest > releases.json
-        cat releases.json
         LATEST_TAG_NAME=$(jq .tag_name releases.json)
         echo "The current entando-k8s-operator-bundle latest tag is = $LATEST_TAG_NAME"
         VERSION_REGEX='^([0-9]+).([0-9]+).([0-9]+)$'
@@ -216,7 +215,7 @@ jobs:
             [[ $new_major -eq $current_major && $new_minor -eq $current_minor && $new_patch -gt $current_patch ]]; then
                 MAKE_LATEST=true 
             else 
-                echo "RELEASE_VERSION_SUFFIX was not considered the latest"
+                echo "RELEASE_VERSION_SUFFIX = ${{ env.RELEASE_VERSION_SUFFIX }} was not considered the latest"
             fi
         else
             echo "RELEASE_VERSION_SUFFIX = ${{ env.RELEASE_VERSION_SUFFIX }} did not match regex"
@@ -287,7 +286,7 @@ jobs:
           fi
           if [[ $CATALOG_SHA_UPDATED = true ]]
           then
-            echo "OKD_CATALOG_IMAGE value uploaded to '${INDEX_SHA}'. Exiting "
+            echo "OKD_CATALOG_IMAGE value updated to '${INDEX_SHA}'. Exiting"
             rm result.json
             break
           else
@@ -323,7 +322,6 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.ENTANDO_BOT_TOKEN }}"\
           -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/${{ env.ENTANDO_RELEASES_REPO }}/releases/latest > releases.json
-        cat releases.json
         LATEST_TAG_NAME=$(jq .tag_name releases.json)
         echo "The current entando-releases latest tag is = $LATEST_TAG_NAME"
         VERSION_REGEX='^([0-9]+).([0-9]+).([0-9]+)$'
@@ -348,7 +346,7 @@ jobs:
             [[ $new_major -eq $current_major && $new_minor -eq $current_minor && $new_patch -gt $current_patch ]]; then
                 MAKE_LATEST=true 
             else 
-                echo "RELEASE_VERSION_SUFFIX was not considered the latest"
+                echo "RELEASE_VERSION_SUFFIX = ${{ env.RELEASE_VERSION_SUFFIX }} was not considered the latest"
             fi
         else
             echo "RELEASE_VERSION_SUFFIX = ${{ env.RELEASE_VERSION_SUFFIX }} did not match regex"
@@ -376,7 +374,6 @@ jobs:
                 -H "Authorization: Bearer ${{ secrets.ENTANDO_BOT_TOKEN }}"\
                 -H "X-GitHub-Api-Version: 2022-11-28" \
                 https://api.github.com/repos/${{ env.ENTANDO_RELEASES_REPO }}/releases?per_page=50 > releases.json
-            cat releases.json
             COUNT=$(jq length releases.json)
             TAG_FOUND=false
             for ((i=0;i<COUNT;i++)); do
@@ -404,7 +401,6 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.ENTANDO_BOT_TOKEN }}"\
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${{ env.ENTANDO_RELEASES_REPO }}/releases/latest > releases.json
-          echo "Curl done."
           LATEST_TAG_NAME=$(jq .tag_name releases.json)
           echo "Comparing $LATEST_TAG_NAME with \"${{ env.RELEASE_TAG }}\""
           if [[ $LATEST_TAG_NAME == \"${{ env.RELEASE_TAG }}\" ]]
