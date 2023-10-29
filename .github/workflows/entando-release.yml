@@ -87,7 +87,7 @@ jobs:
         if [[ -z ${_check_branch} ]]; then
             echo "Release branch does not exist. Creating one based on develop"
             git checkout -b ${{ env.RELEASE_BRANCH }}
-            git push origin ${{ env.RELEASE_BRANCH }}
+            git push origin refs/heads/${{ env.RELEASE_BRANCH }}
         else
             echo "Release branch already exists, moving on."
         fi
