@@ -81,13 +81,15 @@ jobs:
         echo "DOCKER_HUB_REPOS=$(jq -c . < $DOCKER_HUB_REPOS_CONFIG_URL)" >> $GITHUB_ENV
 
     # Create release branch if it doesn't exist
-    - name: Create release branch
+    - name: Get/Create release branch
       run: |
         check_branch=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})
         if [[ -z ${_check_branch} ]]; then
-            echo "remote: branch do not exist"
+            echo "Release branch does not exist. Creating one based on develop"
+            git checkout -b ${{ env.RELEASE_BRANCH }}
+            git push origin ${{ env.RELEASE_BRANCH }}
         else
-            echo "remote: Good lets continue"
+            echo "Release branch already exists, moving on."
         fi
         
     # Checkout the entando-k8s-operator-bundle repository
