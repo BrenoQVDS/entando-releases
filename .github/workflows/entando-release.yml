@@ -49,6 +49,13 @@ jobs:
       release_branch_exists: ${{ steps.release-branch.outputs.exists }}
       develop_sha: ${{ steps.get-develop-sha.outputs.sha }}
     steps:
+    - name: Checkout entando-k8s-operator-bundle
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ env.ENTANDO_K8S_OPERATOR_BUNDLE_REPO }}
+        ref: develop
+        token: ${{ secrets.ENTANDO_BOT_TOKEN }}
+        fetch-depth: 0
     - name: Release branch exists?
       id: release-branch
       run: |
