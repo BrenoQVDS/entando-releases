@@ -43,6 +43,21 @@ env:
   RELEASE_TAG: v${{ github.event.client_payload.major }}.${{ github.event.client_payload.minor }}.${{ github.event.client_payload.patch }}${{ github.event.client_payload.suffix }}
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      release_branch_exists: ${{ steps.release-branch.outputs.exists }}
+      develop_sha: ${{ steps.get-develop-sha.outputs.sha }}
+    steps:
+    - name: Release branch exists?
+      id: release-branch
+      run: |
+        echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }}) >> $GITHUB_OUTPUT
+    - name: Get develop branch SHA
+      id: get-develop-sha
+      run: |
+        echo "sha=$(git rev-parse develop) >> $GITHUB_OUTPUT
+        
   release-entando-k8s-operator-bundle:
     name: Release operator-bundle
     runs-on: ubuntu-latest
@@ -79,25 +94,16 @@ jobs:
     - name: Load Docker Hub repositories
       run: |
         echo "DOCKER_HUB_REPOS=$(jq -c . < $DOCKER_HUB_REPOS_CONFIG_URL)" >> $GITHUB_ENV
-
-    # Create release branch if it doesn't exist
-    - name: Get/Create release branch
-      run: |
-        check_branch=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})
-        if [[ -z ${_check_branch} ]]; then
-            echo "Release branch does not exist. Creating one based on develop"
-            git checkout -b ${{ env.RELEASE_BRANCH }}
-            echo "test1"
-            git remote prune origin
-            echo "test2"
-            git fetch --prune
-            echo "test3"
-            git push origin ${{ env.RELEASE_BRANCH }}
-            echo "test4"
-        else
-            echo "Release branch already exists, moving on."
-        fi
-        
+    
+    - name: Create release branch ${{ env.RELEASE_BRANCH }}
+      uses: peterjgrainger/action-create-branch@v2.2.0
+      if: ${{ needs.setup.outputs.release_branch_exists == '' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.ENTANDO_BOT_TOKEN }}
+      with:
+        branch: 'refs/heads/${{ env.RELEASE_BRANCH }}'
+        sha: '${{ needs.setup.outputs.develop_sha }}'
+          
     # Checkout the entando-k8s-operator-bundle repository
     - name: Checkout entando-k8s-operator-bundle
       uses: actions/checkout@v3
