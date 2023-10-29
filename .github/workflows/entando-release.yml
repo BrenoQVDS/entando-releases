@@ -103,14 +103,6 @@ jobs:
       run: |
         echo "DOCKER_HUB_REPOS=$(jq -c . < $DOCKER_HUB_REPOS_CONFIG_URL)" >> $GITHUB_ENV
 
-    - name: Echo variables
-      run: |
-        echo "test1"
-        echo "${{ needs.setup.outputs.release_branch_exists == '' }}"
-        echo "test2"
-        echo "${{ needs.setup.outputs.develop_sha }}"
-        echo "test3"
-
     - name: Checkout entando-k8s-operator-bundle to create ${{ env.RELEASE_BRANCH }}
       uses: actions/checkout@v3
       if: ${{ needs.setup.outputs.release_branch_exists == '' }}
@@ -123,16 +115,12 @@ jobs:
     - name: Create release branch ${{ env.RELEASE_BRANCH }}
       if: ${{ needs.setup.outputs.release_branch_exists == '' }}
       run: |
-        echo "test1"
         git checkout -b ${{ env.RELEASE_BRANCH }}
-        echo "test2"
         git push origin ${{ env.RELEASE_BRANCH }}
-        echo "test3"
           
     # Checkout the entando-k8s-operator-bundle repository
-    - name: Checkout already existing entando-k8s-operator-bundle ${{ env.RELEASE_BRANCH }}
+    - name: Checkout entando-k8s-operator-bundle ${{ env.RELEASE_BRANCH }}
       uses: actions/checkout@v3
-      if: ${{ needs.setup.outputs.release_branch_exists != '' }}
       with:
         repository: ${{ env.ENTANDO_K8S_OPERATOR_BUNDLE_REPO }}
         ref: ${{ env.RELEASE_BRANCH }}
