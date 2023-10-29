@@ -46,8 +46,8 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      entando_k8s_operator_release_branch_exists: ${{ steps.entando-k8s-operator-release-branch.outputs.exists }}
-      entando_releases_release_branch_exists: ${{ steps.entando-releases-release-branch.outputs.exists }}
+      entando_k8s_operator_release_branch_exists: ${{ steps.entando-k8s-operator-release-branch.outputs.entando-k8s-operator-exists }}
+      entando_releases_release_branch_exists: ${{ steps.entando-releases-release-branch.outputs.entando-releases-exists }}
     steps:
     - name: Checkout entando-k8s-operator-bundle
       uses: actions/checkout@v3
@@ -59,7 +59,7 @@ jobs:
     - name: entando-k8s-operator ${{ env.RELEASE_BRANCH }} branch exists?
       id: entando-k8s-operator-release-branch
       run: |
-        echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
+        echo "entando-k8s-operator-exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
     - name: Checkout entando-releases
       uses: actions/checkout@v3
       with:
@@ -70,7 +70,7 @@ jobs:
     - name: entando-releases ${{ env.RELEASE_BRANCH }} branch exists?
       id: entando-releases-release-branch
       run: |
-        echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
+        echo "entando-releases-exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
 
         
   release-entando-k8s-operator-bundle:
