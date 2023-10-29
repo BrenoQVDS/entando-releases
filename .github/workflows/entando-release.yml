@@ -109,7 +109,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.ENTANDO_BOT_TOKEN }}
       with:
-        branch: 'refs/heads/${{ env.RELEASE_BRANCH }}'
+        branch: 'test123'
         sha: '${{ needs.setup.outputs.develop_sha }}'
           
     # Checkout the entando-k8s-operator-bundle repository
