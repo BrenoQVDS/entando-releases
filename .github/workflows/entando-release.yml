@@ -87,11 +87,11 @@ jobs:
         if [[ -z ${_check_branch} ]]; then
             echo "Release branch does not exist. Creating one based on develop"
             git checkout -b ${{ env.RELEASE_BRANCH }}
-            echo "test1"
+            echo "test4"
             git remote prune origin
-            echo "test2"
-            git push origin refs/heads/${{ env.RELEASE_BRANCH }}
-            echo "test3"
+            echo "test5"
+            git push origin ${{ env.RELEASE_BRANCH }}
+            echo "test6"
         else
             echo "Release branch already exists, moving on."
         fi
