@@ -52,11 +52,11 @@ jobs:
     - name: Release branch exists?
       id: release-branch
       run: |
-        echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }}) >> $GITHUB_OUTPUT
+        echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
     - name: Get develop branch SHA
       id: get-develop-sha
       run: |
-        echo "sha=$(git rev-parse develop) >> $GITHUB_OUTPUT
+        echo "sha=$(git rev-parse develop)" >> $GITHUB_OUTPUT
         
   release-entando-k8s-operator-bundle:
     name: Release operator-bundle
