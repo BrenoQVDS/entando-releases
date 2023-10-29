@@ -121,13 +121,13 @@ jobs:
         fetch-depth: 0
     
     - name: Create release branch ${{ env.RELEASE_BRANCH }}
-      uses: peterjgrainger/action-create-branch@v2.2.0
       if: ${{ needs.setup.outputs.release_branch_exists == '' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.ENTANDO_BOT_TOKEN }}
-      with:
-        branch: 'test123'
-        sha: '${{ needs.setup.outputs.develop_sha }}'
+      run: |
+        echo "test1"
+        echo "git checkout -b ${{ env.RELEASE_BRANCH }}"
+        echo "test2"
+        echo "git push origin ${{ env.RELEASE_BRANCH }}"
+        echo "test3"
           
     # Checkout the entando-k8s-operator-bundle repository
     - name: Checkout entando-k8s-operator-bundle
