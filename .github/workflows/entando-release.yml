@@ -46,8 +46,8 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      release_branch_exists: ${{ steps.release-branch.outputs.exists }}
-      develop_sha: ${{ steps.get-develop-sha.outputs.sha }}
+      entando_k8s_operator_release_branch_exists: ${{ steps.entando-k8s-operator-release-branch.outputs.exists }}
+      entando_releases_release_branch_exists: ${{ steps.entando-releases-release-branch.outputs.exists }}
     steps:
     - name: Checkout entando-k8s-operator-bundle
       uses: actions/checkout@v3
@@ -56,14 +56,22 @@ jobs:
         ref: develop
         token: ${{ secrets.ENTANDO_BOT_TOKEN }}
         fetch-depth: 0
-    - name: Release branch exists?
-      id: release-branch
+    - name: entando-k8s-operator ${{ env.RELEASE_BRANCH }} branch exists?
+      id: entando-k8s-operator-release-branch
       run: |
         echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
-    - name: Get develop branch SHA
-      id: get-develop-sha
+    - name: Checkout entando-releases
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ env.ENTANDO_RELEASES_REPO }}
+        ref: develop
+        token: ${{ secrets.ENTANDO_BOT_TOKEN }}
+        fetch-depth: 0
+    - name: entando-releases ${{ env.RELEASE_BRANCH }} branch exists?
+      id: entando-releases-release-branch
       run: |
-        echo "sha=$(git rev-parse develop)" >> $GITHUB_OUTPUT
+        echo "exists=$(git ls-remote --heads origin ${{ env.RELEASE_BRANCH }})" >> $GITHUB_OUTPUT
+
         
   release-entando-k8s-operator-bundle:
     name: Release operator-bundle
