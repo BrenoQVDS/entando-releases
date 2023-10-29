@@ -102,6 +102,14 @@ jobs:
     - name: Load Docker Hub repositories
       run: |
         echo "DOCKER_HUB_REPOS=$(jq -c . < $DOCKER_HUB_REPOS_CONFIG_URL)" >> $GITHUB_ENV
+
+    - name: Echo variables
+      run: |
+        echo "test1"
+        echo "${{ needs.setup.outputs.release_branch_exists == '' }}"
+        echo "test2"
+        echo "${{ needs.setup.outputs.develop_sha }}"
+        echo "test3"
     
     - name: Create release branch ${{ env.RELEASE_BRANCH }}
       uses: peterjgrainger/action-create-branch@v2.2.0
