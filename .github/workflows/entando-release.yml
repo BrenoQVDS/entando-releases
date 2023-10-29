@@ -111,6 +111,14 @@ jobs:
       run: |
         echo "DOCKER_HUB_REPOS=$(jq -c . < $DOCKER_HUB_REPOS_CONFIG_URL)" >> $GITHUB_ENV
 
+    - name: Echo outputs
+      run: |
+        echo "test1"
+        echo "${{ needs.setup.outputs.entando_k8s_operator_release_branch_exists == '' }}"
+        echo "test2"
+        echo "${{ needs.setup.outputs.entando_releases_release_branch_exists == '' }}"
+        echo "test3"
+
     - name: Checkout entando-k8s-operator-bundle to create ${{ env.RELEASE_BRANCH }}
       uses: actions/checkout@v3
       if: ${{ needs.setup.outputs.entando_k8s_operator_release_branch_exists == '' }}
@@ -282,6 +290,14 @@ jobs:
     timeout-minutes: 5
     needs: release-entando-k8s-operator-bundle
     steps:
+
+    - name: Echo outputs
+      run: |
+        echo "test1"
+        echo "${{ needs.setup.outputs.entando_k8s_operator_release_branch_exists == '' }}"
+        echo "test2"
+        echo "${{ needs.setup.outputs.entando_releases_release_branch_exists == '' }}"
+        echo "test3"
 
     - name: Checkout entando-releases to create ${{ env.RELEASE_BRANCH }}
       uses: actions/checkout@v3
