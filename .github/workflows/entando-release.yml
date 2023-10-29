@@ -288,7 +288,7 @@ jobs:
     name: Release entando-releases
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: release-entando-k8s-operator-bundle
+    needs: [setup, release-entando-k8s-operator-bundle]
     steps:
 
     - name: Echo outputs
