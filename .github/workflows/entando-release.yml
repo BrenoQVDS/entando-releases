@@ -130,8 +130,9 @@ jobs:
         echo "test3"
           
     # Checkout the entando-k8s-operator-bundle repository
-    - name: Checkout entando-k8s-operator-bundle
+    - name: Checkout already existing entando-k8s-operator-bundle ${{ env.RELEASE_BRANCH }}
       uses: actions/checkout@v3
+      if: ${{ needs.setup.outputs.release_branch_exists != '' }}
       with:
         repository: ${{ env.ENTANDO_K8S_OPERATOR_BUNDLE_REPO }}
         ref: ${{ env.RELEASE_BRANCH }}
